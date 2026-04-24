@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Selection Scope — Demo Page</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      background: #0b0b0d;
+      color: #e5e5e5;
+      padding: 40px 24px;
+    }
+    h1 { font-weight: 300; letter-spacing: -0.02em; font-size: 36px; margin: 0 0 8px; }
+    .sub { color: #888; margin: 0 0 40px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #15151a;
+      border: 1px solid #2a2a30;
+      padding: 20px;
+    }
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #9fe800;
+    }
+
+    /* ---- Pulsing orb ---- */
+    .orb-stage {
+      height: 220px;
+      display: grid; place-items: center;
+      background: radial-gradient(circle at 50% 50%, #1f1f28, #0a0a0d);
+    }
+    .orb {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #d4ff00, #6ea000 70%, #1a2600);
+      box-shadow: 0 0 60px #9fe800, 0 0 120px #6ea000;
+      animation: orb-pulse 2s ease-in-out infinite;
+    }
+    @keyframes orb-pulse {
+      0%, 100% { transform: scale(0.9); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* ---- Marquee ticker ---- */
+    .ticker {
+      overflow: hidden;
+      white-space: nowrap;
+      background: #0a0a0d;
+      border: 1px solid #2a2a30;
+      padding: 14px 0;
+      font-family: ui-monospace, monospace;
+      font-size: 24px;
+      letter-spacing: 0.1em;
+    }
+    .ticker span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: ticker-scroll 12s linear infinite;
+      color: #d4ff00;
+    }
+    @keyframes ticker-scroll {
+      to { transform: translateX(-100%); }
+    }
+
+    /* ---- Animated SVG clock ---- */
+    .clock { display: block; margin: 0 auto; }
+    .clock .hand {
+      transform-origin: 100px 100px;
+      transition: none;
+    }
+    .sec { animation: spin 6s linear infinite; }
+    .min { animation: spin 360s linear infinite; }
+    .hour { animation: spin 4320s linear infinite; }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ---- Video ---- */
+    video {
+      width: 100%;
+      display: block;
+      background: #000;
+    }
+
+    /* ---- Gradient stripe ---- */
+    .stripe {
+      height: 220px;
+      background: linear-gradient(
+        90deg,
+        #ff006e, #fb5607, #ffbe0b, #8338ec, #3a86ff, #ff006e
+      );
+      background-size: 400% 100%;
+      animation: slide-bg 8s linear infinite;
+    }
+    @keyframes slide-bg {
+      to { background-position: -400% 0; }
+    }
+
+    code {
+      background: #222;
+      padding: 2px 6px;
+      font-size: 0.9em;
+    }
+    footer { margin: 48px auto 0; max-width: 1100px; color: #666; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div style="max-width: 1100px; margin: 0 auto 30px;">
+    <h1>Selection Scope — demo</h1>
+    <p class="sub">Click the extension icon, drag over any tile below, then play with Rotate and Zoom. The animations keep running inside the mirror.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Pulsing orb</h2>
+      <div class="orb-stage"><div class="orb"></div></div>
+    </div>
+
+    <div class="card">
+      <h2>Animated SVG clock</h2>
+      <svg class="clock" width="200" height="200" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="90" fill="none" stroke="#444" stroke-width="2"/>
+        <circle cx="100" cy="100" r="4" fill="#d4ff00"/>
+        <line class="hand hour" x1="100" y1="100" x2="100" y2="55" stroke="#e5e5e5" stroke-width="5" stroke-linecap="round"/>
+        <line class="hand min"  x1="100" y1="100" x2="100" y2="35" stroke="#e5e5e5" stroke-width="3" stroke-linecap="round"/>
+        <line class="hand sec"  x1="100" y1="100" x2="100" y2="25" stroke="#d4ff00" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="card">
+      <h2>Marquee ticker</h2>
+      <div class="ticker"><span>★ BREAKING ★ SELECTION SCOPE IS LIVE ★ ROTATE ME ★ ZOOM IN ★ THE MARQUEE STILL SCROLLS ★ </span></div>
+      <p style="margin-top: 16px; color: #888; font-size: 13px;">Select across the ticker — the text keeps scrolling inside the mirrored view.</p>
+    </div>
+
+    <div class="card">
+      <h2>HTML5 video</h2>
+      <video
+        src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        autoplay muted loop playsinline controls>
+      </video>
+      <p style="margin-top: 12px; color: #888; font-size: 13px;">Select a portion of the video — frames keep updating inside the scope.</p>
+    </div>
+
+    <div class="card" style="grid-column: 1 / -1;">
+      <h2>Animated gradient stripe</h2>
+      <div class="stripe"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>If the widget isn't loaded yet: open <code>about:debugging#/runtime/this-firefox</code> → <em>Load Temporary Add-on</em> → pick <code>manifest.json</code> from the extension folder.</p>
+  </footer>
+</body>
+</html>
